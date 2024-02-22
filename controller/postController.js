@@ -42,13 +42,12 @@ export const deletePost = async (req, res, next) => {
     }
 }
 
-export const updatePost = async (req, res, next) => {
+export const editPost = async (req, res, next) => {
     try{
         const id = req.params.id
-        logger.info("url" +id  )
-        const results = await updateApiPost(`http://localhost:3000/api/updatePost/${id}`, req.body)
-
-        return res.redirect("/")
+        const results = await fetchApiData(`http://localhost:3000/api/getPost/${id}`)
+        logger.info("postResults" + JSON.stringify(results))
+        return res.render("page/updatePost.njk" , { results })
     }
     catch(err){
         logger.error(err);
