@@ -1,0 +1,52 @@
+{% extends "../ncctemplate.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+{% block pageTitle %} Update Post - Northumberland city council - GOV.UK {% endblock %}
+
+{% block content %}
+
+  <h1 class="govuk-heading-l"> Update Post </h1>
+
+  <form action="/addPost" method="post">
+
+  {{ govukInput({
+  label: {
+    text: "User id:"
+  },
+  classes: "govuk-input--width-10 govuk-input--extra-letter-spacing",
+  id: "userid",
+  name: "userid",
+  autocomplete: "name",
+  spellcheck: false
+}) }}
+
+{{ govukInput({
+  label: {
+    text: "Title"
+  },
+  classes: "govuk-input--width-10 govuk-input--extra-letter-spacing",
+  id: "title:",
+  name: "title",
+  spellcheck: false
+}) }}
+
+{{ govukTextarea({
+  name: "comment",
+  id: "comment",
+  classes: "govuk-input--width-8 govuk-input--extra-letter-spacing",
+  label: {
+    text: "Comment:"
+  }
+}) }}
+
+{{ govukButton({
+  text: "Continue"
+}) }}
+
+</form>
+
+
+
+{% endblock %}
