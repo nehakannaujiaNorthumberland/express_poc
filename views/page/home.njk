@@ -1,0 +1,63 @@
+{% extends "../ncctemplate.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+
+{% block pageTitle %} Homepage - Northumberland city council - GOV.UK {% endblock %}
+
+{% block content %}
+  <h1 class="govuk-heading-l">All Posts</h1>
+
+
+{{ govukButton({
+  text: "Add post",
+  href: "/addPost",
+  isStartButton: false
+}) }}
+
+
+  {% for item in results %}
+{{ govukSummaryList({
+  card: {
+    title: {
+      text: "user"+item.userId
+    },
+    actions: {
+      items: [
+        {
+          href: "/deletePost/" + item.id,
+          text: "Delete post",
+          visuallyHiddenText: "with title " + item.title 
+        },
+        {
+          href: "/updatePost/" + item.id,
+          text: "Edit post",
+          visuallyHiddenText: "with title " + item.title 
+        }
+      ]
+    }
+  },
+  rows: [
+    {
+      key: {
+        text: "title"
+      },
+      value: {
+        text: item.title
+      }
+    },
+    {
+      key: {
+        text: "comment"
+      },
+      value: {
+        text: item.body
+      }
+    }
+  ]
+}) }}
+
+  {% endfor%}
+
+
+{% endblock %}
