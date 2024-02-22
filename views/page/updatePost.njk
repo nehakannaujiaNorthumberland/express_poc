@@ -7,9 +7,9 @@
 
 {% block content %}
 
-  <h1 class="govuk-heading-l"> Update Post </h1>
+  <h1 class="govuk-heading-l"> Edit Post </h1>
 
-  <form action="/addPost" method="post">
+  <form action="/updatePost/{{results[0].id}}" method="post">
 
   {{ govukInput({
   label: {
