@@ -8,6 +8,7 @@ import Session from 'express-session';
 import RedisStore from 'connect-redis';
 import redis from 'redis';
 import router from "./router/router.js";
+import injectRequest from "./middleware/injectRequest.js"
 
 const app = express()
 const port = process.env.port || 3000 
@@ -60,10 +61,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //setup nunjucks templating engine
-nunjucks.configure(["node_modules/govuk-frontend/dist", "views"], {
+const nunjucksConfig = nunjucks.configure(["node_modules/govuk-frontend/dist", "views"], {
     autoescape: true,
     express: app
 })
+app.set("engine", nunjucksConfig);
+app.use(injectRequest);
 app.use(router)
 
 //global error handling

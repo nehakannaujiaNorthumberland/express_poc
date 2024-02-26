@@ -15,7 +15,7 @@ router.get('/:page', (req, res) => {
        req.session.errorSummary = [];
    }
    logger.info(`Errors are ${req.session.errorSummary}`)
-   return res.render(`page/${req.params.page}.njk` , {request : req});
+   return res.render(`page/${req.params.page}.njk`);
 })
 
 
