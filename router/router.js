@@ -8,9 +8,21 @@ router.get("/", (req, res, next) => {
    return fetchAllPost(req, res, next)
 })
 
+router.get('/:page', (req, res) => {
+   logger.info(`Client connected. SessionId is ${req.session.id} and page is ${req.params.page} and ${req.query.hasError}`)
+   logger.info(`Errors are ${req.session.errorSummary}`)
+   if (!req.query.hasError) {
+       req.session.errorSummary = [];
+   }
+   logger.info(`Errors are ${req.session.errorSummary}`)
+   return res.render(`page/${req.params.page}.njk` , {request : req});
+})
+
+
 router.get("/addPost", (req, res, next) => {
     res.render("page/addPost.njk")
  })
+
 
  router.post("/addPost", (req, res, next) => {
     return addPost(req, res, next)
@@ -57,7 +69,6 @@ router.put("/api/updatePost/:id", (req, res, next) => {
    fakeData.splice(0, fakeData.length, ...newData)
    res.json(fakeData)
 })
-
  
 
 

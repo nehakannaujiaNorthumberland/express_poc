@@ -2,12 +2,17 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block pageTitle %} Add Post - Northumberland city council - GOV.UK {% endblock %}
 
 {% block content %}
 
   <h1 class="govuk-heading-l"> Add Post </h1>
+
+  {% if request.session.errorSummary.errorList.length > 0 %}
+      {{ govukErrorSummary(request.session.errorSummary) }}
+    {% endif %}
 
   <form action="/addPost" method="post">
 
