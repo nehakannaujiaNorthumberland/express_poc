@@ -8,11 +8,12 @@
 
 {% block content %}
 
-  <h1 class="govuk-heading-l"> Add Post </h1>
+  <h1 class="govuk-heading-l"> Add Post </h1>  
 
   {% if request.session.errorSummary.errorList.length > 0 %}
       {{ govukErrorSummary(request.session.errorSummary) }}
     {% endif %}
+
 
   <form action="/addPost" method="post">
 
@@ -26,7 +27,8 @@
   autocomplete: "name",
   value: request.session.formData.userid,
   required: true,
-  spellcheck: false
+  spellcheck: false,
+  errorMessage : request.session.error.userid
 }) }}
 
 {{ govukInput({
@@ -37,7 +39,8 @@
   id: "commenttitle",
   name: "commenttitle",
   value: request.session.formData.commenttitle,
-  spellcheck: false
+  spellcheck: false,
+  errorMessage : request.session.error.commenttitle
 }) }}
 
 {{ govukTextarea({
@@ -47,7 +50,8 @@
   value: request.session.formData.comment,
   label: {
     text: "Comment:"
-  }
+  },
+  errorMessage : request.session.error.comment
 }) }}
 
 {{ govukButton({
@@ -55,7 +59,5 @@
 }) }}
 
 </form>
-
-
 
 {% endblock %}

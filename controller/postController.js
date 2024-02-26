@@ -61,7 +61,8 @@ export const editPost = async (req, res, next) => {
     try{
         const id = req.params.id
         const results = await fetchApiData(`http://localhost:3000/api/getPost/${id}`)
-        return res.render("page/updatePost.njk" , { results })
+        req.session.formData = results;
+        return res.redirect("/updatePost")
     }
     catch(err){
         logger.error(err);
@@ -72,6 +73,16 @@ export const editPost = async (req, res, next) => {
 export const updatePost = async (req, res, next) => {
     try{
         const id = req.params.id;
+        const errors = validateForm(addUpdatePostformValidationRules, req);
+
+        console.log("erros validation" + JSON.stringify(req.session.errorSummary));
+
+        console.log("formData" + JSON.stringify(req.session.formData));
+
+        if(errors?.errorList?.length > 0){
+            return res.redirect("/updatePost?hasError=true");
+        }
+
         const results = await updateApiData(`http://localhost:3000/api/updatePost/${id}`, {...req.body, "id": id})
         logger.info("update" + JSON.stringify(results))
         return res.redirect("/")

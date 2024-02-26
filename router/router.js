@@ -9,11 +9,16 @@ router.get("/", (req, res, next) => {
 })
 
 router.get('/:page', (req, res) => {
-   logger.info(`Client connected. SessionId is ${req.session.id} and page is ${req.params.page} and ${req.query.hasError}`)
-   logger.info(`Errors are ${req.session.errorSummary}`)
+   logger.info(`Client connected. SessionId is ${req.session.id} and page is ${req.params.page} and ${req.query.hasError} and ${req.body}`)
+   logger.info(`Errors are ${req.session?.userid}`)
    if (!req.query.hasError) {
        req.session.errorSummary = {};
-       req.session.formData = {};
+       //find a good way to save/ clear session data
+      if(req.params.page == "addPost"){
+        req.session.formData = {}
+        req.session.error = null;
+      } 
+
    }
    logger.info(`Errors are ${req.session.errorSummary}`)
    return res.render(`page/${req.params.page}.njk`);
