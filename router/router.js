@@ -1,4 +1,4 @@
-import  express  from "express"
+import  express, { json }  from "express"
 import { fetchAllPost, addPost, deletePost, editPost, updatePost} from "../controller/postController.js"
 import fakeData from "../data/fakeData.js"
 import { logger } from "../middleware/logger.js";
@@ -12,7 +12,8 @@ router.get('/:page', (req, res) => {
    logger.info(`Client connected. SessionId is ${req.session.id} and page is ${req.params.page} and ${req.query.hasError}`)
    logger.info(`Errors are ${req.session.errorSummary}`)
    if (!req.query.hasError) {
-       req.session.errorSummary = [];
+       req.session.errorSummary = {};
+       req.session.formData = {};
    }
    logger.info(`Errors are ${req.session.errorSummary}`)
    return res.render(`page/${req.params.page}.njk`);
@@ -53,6 +54,7 @@ router.post("/updatePost/:id", (req, res, next) => {
 
 
  router.post("/api/getPost", (req, res, next) => {
+   logger.info("data befire pushing in json" + JSON.stringify(req.body))
     fakeData.push({...req.body})
     res.json(fakeData)
  })

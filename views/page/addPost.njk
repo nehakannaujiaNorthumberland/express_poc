@@ -24,6 +24,7 @@
   id: "userid",
   name: "userid",
   autocomplete: "name",
+  value: request.session.formData.userid,
   required: true,
   spellcheck: false
 }) }}
@@ -35,6 +36,7 @@
   classes: "govuk-input--width-10 govuk-input--extra-letter-spacing",
   id: "commenttitle",
   name: "commenttitle",
+  value: request.session.formData.commenttitle,
   spellcheck: false
 }) }}
 
@@ -42,6 +44,7 @@
   name: "comment",
   id: "comment",
   classes: "govuk-input--width-8 govuk-input--extra-letter-spacing",
+  value: request.session.formData.comment,
   label: {
     text: "Comment:"
   }

@@ -4,24 +4,7 @@ import { logger } from "../middleware/logger.js"
 import { v4 as uuidv4 } from 'uuid';
 import { json } from "express";
 import {validateForm} from "../lib/validateForm.js"
-
-
-const formValidaionRules = [{
-                             field: 'userid', 
-                             validator: (value) => typeof value === 'string' && value.trim() !== '',
-                             message: 'user id is required and must be a non-empty string.' 
-                            },
-                            {
-                                field: 'commenttitle', 
-                                validator: (value) => typeof value === 'string' && value.trim() !== '',
-                                message: 'title is required and must be a non-empty string.' 
-                               },
-                               {
-                                field: 'comment', 
-                                validator: (value) => typeof value === 'string' && value.trim() !== '',
-                                message: 'user id is required and must be a non-empty string.' 
-                               },
-                        ]
+import {addUpdatePostformValidationRules} from "../lib/formValidationRules.js"
 
 export const fetchAllPost = async (req, res, next) => {
     try{
@@ -35,23 +18,22 @@ catch(err){
 
 }
 
-
 export const addPost = async (req, res, next) => {
     try{
 
-        const errors = validateForm(formValidaionRules, req)
+        req.session.formData = req.body;
+
+        const errors = validateForm(addUpdatePostformValidationRules, req);
+
         console.log("erros validation" + JSON.stringify(req.session.errorSummary));
+
+        console.log("formData" + JSON.stringify(req.session.formData));
+
         if(errors?.errorList?.length > 0){
             return res.redirect("/addPost?hasError=true");
         }
 
-        const data = { 
-                        title: req.body.commenttitle,
-                        body: req.body.comment,
-                        userId: req.body.userid,
-                        id: uuidv4()
-                    }
-        const results = await createPost("http://localhost:3000/api/getPost", data)
+        const results = await createPost("http://localhost:3000/api/getPost", {...req.body, id: uuidv4()})
 
         return res.redirect("/")
     }
@@ -90,13 +72,7 @@ export const editPost = async (req, res, next) => {
 export const updatePost = async (req, res, next) => {
     try{
         const id = req.params.id;
-        const data = { title: req.body.commenttitle,
-            body: req.body.comment,
-            userId: req.body.userid,
-            id: req.params.id
-        }
-        logger.info("data" + JSON.stringify(data))
-        const results = await updateApiData(`http://localhost:3000/api/updatePost/${id}`, data)
+        const results = await updateApiData(`http://localhost:3000/api/updatePost/${id}`, {...req.body, "id": id})
         logger.info("update" + JSON.stringify(results))
         return res.redirect("/")
     }
