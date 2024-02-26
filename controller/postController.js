@@ -10,7 +10,18 @@ const formValidaionRules = [{
                              field: 'userid', 
                              validator: (value) => typeof value === 'string' && value.trim() !== '',
                              message: 'user id is required and must be a non-empty string.' 
-                            }]
+                            },
+                            {
+                                field: 'commenttitle', 
+                                validator: (value) => typeof value === 'string' && value.trim() !== '',
+                                message: 'title is required and must be a non-empty string.' 
+                               },
+                               {
+                                field: 'comment', 
+                                validator: (value) => typeof value === 'string' && value.trim() !== '',
+                                message: 'user id is required and must be a non-empty string.' 
+                               },
+                        ]
 
 export const fetchAllPost = async (req, res, next) => {
     try{
@@ -24,24 +35,6 @@ catch(err){
 
 }
 
-function mapErrorsForDisplay () {
-    const details = [{path: "userId", message : "please enter user id"}]
-    return {
-      titleText: 'Fix the following errors',
-      errorList: details.map(err => {
-        const name = err.path
-        const message = err.message
-  
-        return {
-          href: `#${name}`,
-          name: name,
-          text: message
-        }
-      })
-    }
-  }
-
-
 
 export const addPost = async (req, res, next) => {
     try{
@@ -53,7 +46,7 @@ export const addPost = async (req, res, next) => {
         }
 
         const data = { 
-                        title: req.body.title,
+                        title: req.body.commenttitle,
                         body: req.body.comment,
                         userId: req.body.userid,
                         id: uuidv4()
@@ -97,7 +90,7 @@ export const editPost = async (req, res, next) => {
 export const updatePost = async (req, res, next) => {
     try{
         const id = req.params.id;
-        const data = { title: req.body.title,
+        const data = { title: req.body.commenttitle,
             body: req.body.comment,
             userId: req.body.userid,
             id: req.params.id
